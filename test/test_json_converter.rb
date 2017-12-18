@@ -1,11 +1,12 @@
 require 'minitest/autorun'
-require 'json_converter'
+require 'ludovic/json_converter'
+require 'yaml'
 
 class TestJsonConverter < Minitest::Test
   attr_reader :json_converter
 
   def setup
-    @json_converter = JsonConverter.new('test/fixtures/users.json')
+    @json_converter = Ludovic::JsonConverter.new('test/fixtures/users.json')
   end
 
   def test_headers
@@ -28,7 +29,7 @@ class TestJsonConverter < Minitest::Test
 
   def test_to_csv
     skip
-    expected = File.read("test/fixtures/users.csv")
+    expected = YAML.load_file("test/fixtures/users.yml")
     assert_equal expected, json_converter.to_csv
   end
 end
