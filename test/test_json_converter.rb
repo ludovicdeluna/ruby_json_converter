@@ -28,8 +28,9 @@ class TestJsonConverter < Minitest::Test
   end
 
   def test_to_csv
-    skip
-    expected = YAML.load_file("test/fixtures/users.yml")
-    assert_equal expected, json_converter.to_csv
+    expected = File.read("test/fixtures/users.csv")
+    io = StringIO.new
+    json_converter.to_csv(io)
+    assert_equal expected, io.string
   end
 end

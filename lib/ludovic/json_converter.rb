@@ -1,10 +1,12 @@
 # frozen_string_literal: true
 require 'json'
+require 'csv'
 
 module Ludovic
   class JsonConverter
     FORBIDDEN_CHARS = /\./
     ERR_INVALID_CHARS = "Forbidden '.' in field %s"
+    ERR_ACCESS_JSON_KEY = "No access to %s from hsh"
 
     def datas
       throw "No data to parse" unless @datas
@@ -41,8 +43,24 @@ module Ludovic
       end
     end
 
-    def to_csv(path)
-      # TODO : Limitation : Structure dismatch, on empty dig result, throw error.
+    def to_csv(io, separator = ",")
+      separator ||= ","
+      rows = datas.map do |hsh|
+        line = diggers.each_with_object([]) do |keypath, row|
+          value = hsh.dig(*keypath)
+          throw BadInput.new(ERR_ACCESS_JSON_KEY % [keypath.join('/')]) unless value
+          row << (value.is_a?(Array) ? value.join(',') : value)
+        end
+      end
+      CSV.new(io, col_sep: separator).tap do |output|
+        output << headers
+        rows.each { |row| output << row }
+      end
+      return io
+    end
+
+    def write_csv(path, separator = nil)
+      to_csv(File.open(path, 'w'), separator)
     end
   end
 
