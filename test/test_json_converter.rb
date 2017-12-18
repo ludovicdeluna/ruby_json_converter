@@ -6,7 +6,7 @@ class TestJsonConverter < Minitest::Test
   attr_reader :json_converter
 
   def setup
-    @json_converter = Ludovic::JsonConverter.new('test/fixtures/users.json')
+    @json_converter = Ludovic::JsonConverter.new.load_file('test/fixtures/users.json')
   end
 
   def test_headers

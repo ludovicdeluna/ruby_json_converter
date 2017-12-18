@@ -6,12 +6,19 @@ module Ludovic
     FORBIDDEN_CHARS = /\./
     ERR_INVALID_CHARS = "Forbidden '.' in field %s"
 
-    def initialize(path)
-      @path = path
+    def datas
+      throw "No data to parse" unless @datas
+      @datas
     end
 
-    def datas
-      @datas ||= JSON.load(File.read(@path))
+    def load_file(path)
+      self.datas = File.read(path)
+      self
+    end
+
+    def datas=(value)
+      throw "Data must be a string value" unless value.is_a?(String)
+      @datas = JSON.load(value)
     end
 
     def headers
