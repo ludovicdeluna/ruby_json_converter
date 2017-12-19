@@ -20,6 +20,8 @@ module Ludovic
 
     def datas=(value)
       throw "Data must be a string value" unless value.is_a?(String)
+      @headers = nil
+      @diggers = nil
       @datas = JSON.load(value)
     end
 
