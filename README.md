@@ -11,7 +11,7 @@ Translate an array of objects from JSON to CSV. See [objectives](overview.pdf)
 require 'ludovic/json_converter'
 
 users_converter = Ludovic::JsonConverter.new
-users_converter.data = "[
+users_converter.datas = '[
   {
     "id": 0,
     "email": "colleengriffith@quintity.com",
@@ -30,10 +30,7 @@ users_converter.data = "[
       }
     }
   }
-]"
-
-users_converter.write_csv('path/to/csv')
-# => Write to a CSV
+]'
 
 users_converter.headers
 # => Return array of headers :
