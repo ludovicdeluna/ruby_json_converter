@@ -62,7 +62,10 @@ module Ludovic
     end
 
     def write_csv(path, separator = nil)
-      to_csv(File.open(path, 'w'), separator).close
+      io = File.open(path, 'w')
+      to_csv(io, separator)
+    ensure
+      io.close if io
     end
   end
 
